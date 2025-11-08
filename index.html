@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>邯郸市第一中学摄影社团 - 记录校园精彩瞬间</title>
+  <!-- 引入外部资源 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+  
+  <!-- Tailwind 配置 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#E50914', // 主色调：红色
+            secondary: '#1A1A1A', // 辅助色：深灰
+            dark: '#0F0F0F', // 深色背景
+            light: '#F5F5F5', // 浅色文本
+            'gray-dark': '#333333',
+            'gray-medium': '#666666',
+            'gray-light': '#999999'
+          },
+          fontFamily: {
+            inter: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.5s ease-in-out',
+            'slide-up': 'slideUp 0.6s ease-out',
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(20px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' },
+            },
+          },
+        },
+      }
+    }
+  </script>
+  
+  <!-- 自定义工具类 -->
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .text-shadow {
+        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+      }
+      .text-shadow-lg {
+        text-shadow: 0 4px 8px rgba(0,0,0,0.7);
+      }
+      .backdrop-blur {
+        backdrop-filter: blur(8px);
+      }
+      .scrollbar-hide {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
+      .hover-scale {
+        transition: transform 0.3s ease;
+      }
+      .hover-scale:hover {
+        transform: scale(1.05);
+      }
+      .card-shadow {
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+      }
+    }
+  </style>
+  
+  <style>
+    /* 基础样式 */
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: #0F0F0F;
+      color: #F5F5F5;
+      scroll-behavior: smooth;
+    }
+    
+    /* 轮播图渐变叠加 */
+    .carousel-gradient {
+      background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 70%, #0F0F0F 100%);
+    }
+    
+    /* 加载动画 */
+    .skeleton {
+      background: linear-gradient(90deg, #333 25%, #444 50%, #333 75%);
+      background-size: 200% 100%;
+      animation: skeleton-loading 1.5s infinite;
+    }
+    
+    @keyframes skeleton-loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+  </style>
+</head>
+
+<body class="antialiased">
+  <!-- 导航栏 -->
+  <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div class="bg-transparent backdrop-blur-md">
+      <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+        <!-- Logo -->
+          <a href="#" class="flex items-center space-x-2">
+            <span class="text-primary text-3xl"><i class="fa fa-camera"></i></span>
+            <span class="text-white font-bold text-2xl tracking-tight">邯郸市第一中学摄影社团</span>
+          </a>
+        
+        <!-- 桌面端导航菜单 -->
+        <nav class="hidden md:flex items-center space-x-8">
+          <a href="#" class="text-white hover:text-primary transition-colors font-medium">首页</a>
+        </nav>
+        
+        <!-- 移动端菜单按钮 -->
+        <div class="flex items-center space-x-4">
+          <button id="mobile-menu-btn" class="md:hidden text-gray-light hover:text-primary transition-colors">
+            <i class="fa fa-bars text-xl"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 移动端导航菜单 (默认隐藏) -->
+    <div id="mobile-menu" class="md:hidden bg-secondary border-t border-gray-medium/30 opacity-0 invisible transition-all duration-300 transform -translate-y-2">
+      <div class="container mx-auto px-4 py-3 space-y-3">
+        <a href="#" class="block py-2 text-white font-medium">首页</a>
+        <div class="relative mt-2">
+          <input type="text" placeholder="搜索图片、视频..." 
+                class="bg-gray-dark/50 border border-gray-medium/30 rounded-full py-2 px-4 pr-10 text-sm focus:outline-none focus:ring-1 focus:ring-primary w-full">
+          <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-light">
+            <i class="fa fa-search text-sm"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- 英雄区轮播 -->
+    <section class="relative h-screen overflow-hidden">
+      <div id="carousel" class="h-full">
+        <!-- 轮播项 1 -->
+        <div class="carousel-item absolute inset-0 opacity-100 transition-opacity duration-1000">
+          <img src="https://picsum.photos/id/1035/1920/1080" alt="邯郸市第一中学摄影社" class="w-full h-full object-cover">
+          <div class="absolute inset-0 carousel-gradient"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-4 md:p-8 lg:p-16">
+            <div class="max-w-2xl animate-slide-up">
+              <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold text-white text-shadow-lg mb-4 leading-tight">邯郸市第一中学摄影社</h1>
+              <div class="flex items-center space-x-4 mb-4 text-sm">
+                  <span class="flex items-center"><i class="fa fa-calendar-o mr-1"></i> 2025</span>
+                  <span class="flex items-center text-yellow-400"><i class="fa fa-star mr-1"></i> 摄影拍摄</span>
+                </div>
+              <p class="text-gray-light text-shadow mb-8">
+                  邯郸市第一中学摄影社团成立于2025年，致力于记录校园生活的精彩瞬间，培养学生的摄影技能与艺术素养。我们定期为学校协助拍摄大型活动，帮助学校进行宣传！
+                </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 分类浏览 -->
+    <section id="categories" class="container mx-auto px-4 py-8">
+      <h2 class="text-2xl font-bold text-white mb-6">分类浏览</h2>
+      
+      <div class="grid grid-cols-2 gap-4 mb-8">
+        <button class="category-tag bg-secondary hover:bg-gray-dark/50 transition-all rounded-lg p-3 flex items-center justify-center hover-scale card-shadow">
+          <i class="fa fa-picture-o text-primary mr-2"></i>
+          <span>图片</span>
+        </button>
+        <button class="category-tag bg-secondary hover:bg-gray-dark/50 transition-all rounded-lg p-3 flex items-center justify-center hover-scale card-shadow">
+          <i class="fa fa-video-camera text-primary mr-2"></i>
+          <span>视频</span>
+        </button>
+      </div>
+      
+
+      
+      <!-- 时间分类 -->
+      <div>
+        <h3 class="text-xl font-semibold text-white mb-4">按时间</h3>
+        <div class="grid grid-cols-3 gap-3">
+          <button class="year-tag bg-primary hover:bg-primary/90 transition-all rounded-full px-4 py-1.5 text-sm">2025年</button>
+        </div>
+      </div>
+    </section>
+    
+
+  </main>
+  
+  <!-- 页脚 -->
+  <footer class="bg-secondary pt-12 pb-6">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        <div>
+          <div class="flex items-center space-x-2 mb-6">
+            <span class="text-primary text-3xl"><i class="fa fa-camera"></i></span>
+            <span class="text-white font-bold text-2xl tracking-tight">邯郸市第一中学摄影社团</span>
+          </div>
+          <p class="text-gray-light mb-6">
+            记录美好瞬间，展现校园风采。邯郸市第一中学摄影社团致力于捕捉校园生活的精彩画面，分享摄影艺术的魅力。
+          </p>
+
+        </div>
+        
+        <div>
+          <h3 class="text-white font-semibold text-lg mb-6">快速链接</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-light hover:text-primary transition-colors">视频</a></li>
+            <li><a href="#" class="text-gray-light hover:text-primary transition-colors">图片</a></li>
+            <li><a href="#" class="text-gray-light hover:text-primary transition-colors">素材</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- 回到顶部按钮 -->
+  <button id="back-to-top" class="fixed bottom-6 right-6 bg-primary hover:bg-primary/90 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all opacity-0 invisible z-40">
+    <i class="fa fa-angle-up text-xl"></i>
+  </button>
+  
+  <!-- JavaScript -->
+  <script>
+    // 导航栏滚动效果
+    const navbar
