@@ -180,42 +180,34 @@
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-xl text-white font-semibold">摄影素材集合</h3>
         </div>
-        <p class="text-gray-light mb-4">点击下方按钮查看所有素材</p>
-        <button id="view-materials-btn" class="bg-primary hover:bg-primary/90 text-white py-2 px-6 rounded-full transition-all flex items-center">
-          <i class="fa fa-folder-open mr-2"></i>
-          <span>浏览素材</span>
-        </button>
-      </div>
-    </section>
-    
-    <!-- 素材弹窗 (默认隐藏) -->
-    <div id="materials-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
-      <!-- 背景遮罩 -->
-      <div id="modal-overlay" class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
-      
-      <!-- 弹窗内容 -->
-      <div class="relative bg-secondary rounded-xl p-8 max-w-md w-full mx-4 card-shadow">
-        <div class="text-center">
-          <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 text-primary mb-6">
-            <i class="fa fa-cloud-download text-3xl"></i>
+        <p class="text-gray-light mb-6">以下是摄影素材的网盘链接和提取密码，点击链接即可前往下载：</p>
+        
+        <!-- 网盘链接卡片 -->
+        <div class="bg-dark border border-gray-medium/30 rounded-lg p-6 mb-6">
+          <div class="flex flex-col space-y-4">
+            <div>
+              <label class="block text-sm text-gray-light mb-1">网盘链接：</label>
+              <a href="https://wwys.lanzoub.com/b016kdik6b" target="_blank" class="text-primary hover:underline flex items-center">
+                <i class="fa fa-link mr-2"></i>
+                <span>https://wwys.lanzoub.com/b016kdik6b</span>
+              </a>
+            </div>
+            <div>
+              <label class="block text-sm text-gray-light mb-1">提取密码：</label>
+              <div class="flex items-center bg-primary/10 border border-primary/30 rounded p-3">
+                <span class="text-primary font-bold text-lg">91er</span>
+              </div>
+            </div>
           </div>
-          <h3 class="text-2xl font-bold text-white mb-4">素材下载</h3>
-          <p class="text-gray-light mb-4">点击下方按钮，跳转至网盘下载查看</p>
-          <div class="bg-primary/10 border border-primary/30 rounded-lg p-4 mb-8">
-            <p class="text-primary font-medium">提示：网盘密码为 <span class="font-bold">91er</span></p>
-          </div>
-          <a href="https://wwys.lanzoub.com/b016kdik6b" target="_blank" class="inline-block bg-primary hover:bg-primary/90 text-white py-3 px-8 rounded-full transition-all flex items-center justify-center">
-            <i class="fa fa-external-link mr-2"></i>
-            <span>前往网盘链接</span>
-          </a>
         </div>
         
-        <!-- 关闭按钮 -->
-        <button id="close-modal-btn" class="absolute top-4 right-4 text-gray-light hover:text-white transition-colors">
-          <i class="fa fa-times text-xl"></i>
-        </button>
+        <!-- 直接下载按钮 -->
+        <a href="https://wwys.lanzoub.com/b016kdik6b" target="_blank" class="inline-block bg-primary hover:bg-primary/90 text-white py-3 px-8 rounded-full transition-all flex items-center justify-center">
+          <i class="fa fa-download mr-2"></i>
+          <span>前往网盘下载素材</span>
+        </a>
       </div>
-    </div>
+    </section>
   </main>
   
   <!-- 页脚 -->
@@ -236,7 +228,10 @@
         <div>
           <h3 class="text-white font-semibold text-lg mb-6">快速链接</h3>
           <ul class="space-y-3">
-            <li><a href="#" id="quicklink-materials" class="text-gray-light hover:text-primary transition-colors">素材</a></li>
+            <li><a href="https://wwys.lanzoub.com/b016kdik6b" target="_blank" class="text-gray-light hover:text-primary transition-colors flex items-center">
+              <i class="fa fa-download mr-2"></i>
+              <span>素材下载</span>
+            </a></li>
           </ul>
         </div>
       </div>
@@ -252,28 +247,7 @@
   <script>
     // 导航栏滚动效果
     const navbar = document.getElementById('navbar');
-    
-    // 页面元素
-    const materialsModal = document.getElementById('materials-modal');
-    const modalOverlay = document.getElementById('modal-overlay');
-    const closeModalBtn = document.getElementById('close-modal-btn');
-    const viewMaterialsBtn = document.getElementById('view-materials-btn');
-    const quicklinkMaterials = document.getElementById('quicklink-materials');
     const backToTopBtn = document.getElementById('back-to-top');
-    
-    // 显示素材弹窗
-    function showMaterialsModal() {
-      materialsModal.classList.remove('hidden');
-      // 禁止背景滚动
-      document.body.style.overflow = 'hidden';
-    }
-    
-    // 关闭素材弹窗
-    function closeMaterialsModal() {
-      materialsModal.classList.add('hidden');
-      // 恢复背景滚动
-      document.body.style.overflow = '';
-    }
     
     // 导航栏滚动效果
     window.addEventListener('scroll', function() {
@@ -313,21 +287,5 @@
         mobileMenu.classList.add('opacity-0', 'invisible', '-translate-y-2');
         mobileMenu.classList.remove('opacity-100', 'visible', 'translate-y-0');
         mobileMenuBtn.innerHTML = '<i class="fa fa-bars text-xl"></i>';
-      }
-    });
-    
-    // 事件监听器
-    viewMaterialsBtn.addEventListener('click', showMaterialsModal);
-    quicklinkMaterials.addEventListener('click', function(e) {
-      e.preventDefault();
-      showMaterialsModal();
-    });
-    closeModalBtn.addEventListener('click', closeMaterialsModal);
-    modalOverlay.addEventListener('click', closeMaterialsModal);
-    
-    // 按ESC键关闭弹窗
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && !materialsModal.classList.contains('hidden')) {
-        closeMaterialsModal();
       }
     });
